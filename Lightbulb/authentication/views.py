@@ -12,6 +12,7 @@ def signup(request):
         firstname = request.POST.get('firstname')
         emailID = request.POST.get('emailID')
         password = request.POST.get('password')
+        print(firstname, emailID, password)
 
         my_user = User.objects.create_user(firstname, emailID, password)
         my_user.save()
@@ -23,11 +24,13 @@ def signup(request):
         if my_user is not None:
            login(request, my_user)
            return redirect('/')
-        return redirect('/')
+        return redirect('/signup')
     
     except:
        invalid="User already exists"
        return render(request, 'signup.html', {'invalid':invalid})
+
+    return render(request, 'signup.html')
 
 def home(request):
     return HttpResponse("Test")
