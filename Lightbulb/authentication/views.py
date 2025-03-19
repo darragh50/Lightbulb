@@ -37,5 +37,24 @@ def signup(request):
 
     return render(request, 'signup.html')
 
+# Function to handle user login
+def login_view(request):
+    if request.method == 'POST':
+        firstname =request.POST.get('firstname')
+        password =request.POST.get('password')
+        # Checks if a user exists with the given credentials
+        user=authenticate(request,username=firstname, password=password)
+      
+        # Redirect depending on if successful or not
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        invalid="Invalid Credentials"
+
+        return render(request, 'login.html', {'invalid':invalid})
+    
+    return render(request, 'login.html')
+
+
 def home(request):
     return HttpResponse("Home")
