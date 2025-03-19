@@ -30,7 +30,7 @@ def signup(request):
 
             # Log the user in
             login(request, my_user)
-            return redirect('/')
+            return redirect('/login')
         
         except Exception as e:
             return render(request, 'signup.html', {'invalid': f"Error: {str(e)}"})
