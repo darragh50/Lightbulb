@@ -4,10 +4,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SignUp</title>
+    <title>SignUp</title> 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .error {
+            color: red;
+            margin-bottom: 10px;
+        }
+        .login-link {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
+    <div class="container">
     <h1>Sign Up</h1>
     
     {% if invalid %}
@@ -17,22 +73,24 @@
     <form method="post">
         {% csrf_token %}
         
-        <label for="firstname">Your Name:</label>
-        <input type="text" id="firstname" name="firstname" required>
-        <br>
+        <div class="form-group">
+            <label for="firstname">Your Name:</label>
+            <input type="text" id="firstname" name="firstname" required>
+        </div>
         
-        <label for="emailID">Your Email:</label>
-        <input type="email" id="emailID" name="emailID" required>
-        <br>
+        <div class="form-group">
+         <label for="emailID">Your Email:</label>
+            <input type="email" id="emailID" name="emailID" required>
+        </div>
         
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-        
-        <p>Already have an account? <a href="/loginn">Login</a></p>
-        
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+                
         <button type="submit">Register</button>
     </form>
+        <p class="login-link">Already have an account? <a href="/loginn">Login</a></p>
+    </div>
 </body>
-
 </html>
