@@ -7,30 +7,35 @@ from . models import Profile
 # Create your views here.
 # Handle user registration - check request method. Recieve and save user input to user model
 def signup(request):
-    try:
-     if request.method == 'POST':
+    if request.method == 'POST':
         firstname = request.POST.get('firstname')
         emailID = request.POST.get('emailID')
         password = request.POST.get('password')
-        print(firstname, emailID, password)
+        
+        # Check if user already exists
+        if User.objects.filter(username=firstname).exists():
+            return render(request, 'signup.html', {'invalid': "User already exists"})
+        
+        if User.objects.filter(email=emailID).exists():
+            return render(request, 'signup.html', {'invalid': "Email already in use"})
 
-        my_user = User.objects.create_user(firstname, emailID, password)
-        my_user.save()
+        # Create user
+        try:
+            my_user = User.objects.create_user(username=firstname, email=emailID, password=password)
+            my_user.save()
 
-        user_model = User.objects.get(username=firstname)
-        new_profile = Profile.objects.create(user=user_model, id_user=user_model.id)
-        new_profile.save()
+            # Create profile
+            new_profile = Profile.objects.create(user=my_user, id_user=my_user.id)
+            new_profile.save()
 
-        if my_user is not None:
-           login(request, my_user)
-           return redirect('/')
-        return redirect('/signup')
-    
-    except:
-       invalid="User already exists"
-       return render(request, 'signup.html', {'invalid':invalid})
+            # Log the user in
+            login(request, my_user)
+            return redirect('/')
+        
+        except Exception as e:
+            return render(request, 'signup.html', {'invalid': f"Error: {str(e)}"})
 
     return render(request, 'signup.html')
 
 def home(request):
-    return HttpResponse("Test")
+    return HttpResponse("Home")
