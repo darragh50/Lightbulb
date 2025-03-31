@@ -55,6 +55,11 @@ def login_view(request):
     
     return render(request, 'login.html')
 
+# Function to handle user logout
+def logout_view(request):
+    logout(request)
+    return redirect('/login')
+
 
 def home(request):
     return HttpResponse("Home")
