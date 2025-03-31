@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from . models import Profile
+from . models import Profile, Post
 
 # Create your views here.
 # Handle user registration - check request method. Recieve and save user input to user model
@@ -59,6 +59,20 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/login')
+
+# Function that handles uploading of a new post
+def upload(request):
+    if request.method == 'POST':
+        # Get user, image and caption from the form 
+        user = request.user.username
+        image = request.FILES.get('image-upload')
+        caption = request.POST['caption']
+        # Creates a new post object and saves it
+        new_post=Post.objects.create(user=user, image=image, caption=caption)
+        new_post.save()
+        return redirect('/')
+    else:
+        return redirect('/')
 
 
 def home(request):
