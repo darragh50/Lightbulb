@@ -1,1 +1,111 @@
-<h1>Main.html</h1>
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lightbulb💡</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: row;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .sidebar {
+            background: #fff;
+            width: 250px;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            margin: auto;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .post {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .post img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        .btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .nav-link {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: black;
+            border-radius: 5px;
+            margin: 5px 0;
+            text-align: center;
+            background: #f4f4f4;
+        }
+        .nav-link:hover {
+            background: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>@{{user}}</h2>
+        <nav>
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/explore">Explore</a>
+            <a class="nav-link" href="/profile/{{user}}">Profile</a>
+            <a class="nav-link" href="/logout">Logout</a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <h1>Welcome @{{user}}</h1>
+
+        <!-- Posts -->
+        <div>
+            {% for pos in post %}
+            <div class="post" id="{{pos.id}}">
+                <img src="{{pos.image.url}}" alt="Post Image">
+                <h5><a href="/profile/{{pos.user}}">@{{pos.user}}</a></h5>
+                <p>{{pos.caption}}</p>
+                <p class="text-muted">{{pos.created_at}}</p>
+                <hr>
+                <div>
+                    <a href="/like-post/{{pos.id}}" class="btn">Like</a>
+                    <p>{{ pos.numLikes }} like{{ pos.numLikes|pluralize }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

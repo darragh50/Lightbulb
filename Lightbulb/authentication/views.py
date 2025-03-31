@@ -76,4 +76,4 @@ def upload(request):
 
 
 def home(request):
-    return HttpResponse("Home")
+    return render(request, 'main.html')
