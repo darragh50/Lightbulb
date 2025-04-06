@@ -14,6 +14,7 @@ urlpatterns = [
     path('like-post/<str:id>', views.like, name='like-post'),
     path('#<str:id>', views.feed_view),
     path('explore', views.explore),
+    path('profile/<str:id_user>', views.profile),
 ]
 
 

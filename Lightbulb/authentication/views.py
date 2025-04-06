@@ -134,3 +134,25 @@ def explore(request):
     }
 
     return render(request, 'explore.html', context)
+
+# Function to view a user's profile
+def profile(request,id_user):
+    # Get the user object with the provided id 
+    user_obj = User.objects.get(id=id_user)
+    profile = Profile.objects.get(user=request.user)
+    # Get the profile of the user whose profile is being viewed
+    user_profile = Profile.objects.get(user=user_obj)
+    user_posts = Post.objects.filter(user=user_obj.username).order_by('-created_at')
+    # Calculating the number of posts made by the user
+    user_post_length = len(user_posts)
+
+    # Pass the context back to the template
+    context = {
+        'user_obj': user_obj,
+        'user_profile': user_profile,
+        'user_posts': user_posts,
+        'user_post_length': user_post_length,
+        'profile': profile,
+    }
+
+    return render(request, 'profile.html', context)
