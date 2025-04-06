@@ -138,7 +138,7 @@ def explore(request):
 # Function to view a user's profile
 def profile(request,id_user):
     # Get the user object with the provided id 
-    user_obj = User.objects.get(id=id_user)
+    user_obj = User.objects.get(username=id_user)
     profile = Profile.objects.get(user=request.user)
     # Get the profile of the user whose profile is being viewed
     user_profile = Profile.objects.get(user=user_obj)
