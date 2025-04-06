@@ -1,0 +1,35 @@
+{% load static %}
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="editProfileLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header text-white" style="background-color: 0d6efd;">
+                <h5 class="modal-title" id="editProfileLabel"><i class="fa-solid fa-pen-to-square me-2"></i>Edit Profile</h5>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body px-4 py-3">
+                    <div class="mb-3 text-center">
+                        <label class="form-label"><strong>Profile Picture</strong></label>
+                        <div class="mb-2">
+                            <img src="{{ user_profile.profileimg.url }}" alt="Current profile image" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+                        </div>
+                        <input type="file" name="image" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="bio-text" class="form-label"><i class="fa-solid fa-align-left me-2"></i>Bio</label>
+                        <textarea class="form-control" id="bio-text" name="bio" placeholder="Your bio here...">{{ user_profile.bio }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="location" class="form-label"><i class="fa-solid fa-location-dot me-2"></i>Location</label>
+                        <input type="text" class="form-control" id="location" name="location" value="{{ user_profile.location }}">
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-outline-primary">Update Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
