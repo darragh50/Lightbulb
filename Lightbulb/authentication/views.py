@@ -155,4 +155,32 @@ def profile(request,id_user):
         'profile': profile,
     }
 
+    # Check if the logged-in user is the same as the user whose profile is being viewed
+    if request.user.username == id_user:
+        if request.method == 'POST':
+            # If no image file is uploaded in the form, keep the existing image
+            if request.FILES.get('image') == None:
+                image = user_profile.profileimg
+                bio = request.POST['bio']
+                location = request.POST['location']
+                # Update the profile with the new bio and location, but keep the old image
+                user_profile.profileimg = image
+                user_profile.bio = bio
+                user_profile.location = location
+                user_profile.save()
+            # If an image file is uploaded in the form
+            if request.FILES.get('image') != None:
+                image = request.FILES.get('image')
+                bio = request.POST['bio']
+                location = request.POST['location']
+                # Update the profile with the new image, bio, and location
+                user_profile.profileimg = image
+                user_profile.bio = bio
+                user_profile.location = location
+                user_profile.save()
+            
+            return redirect('/profile/'+id_user)
+        else:
+            return render(request, 'profile.html', context)
+                
     return render(request, 'profile.html', context)
