@@ -105,4 +105,19 @@ def like(request,id):
 
         post.save()
 
-        return redirect('/')
+        return redirect('/#' + id)
+    
+# Function generates the user's feed showing their posts 
+def feed_view(request):
+    # Get posts made by the current user 
+    post = Post.objects.get(id=id)
+    # Get the logged-in user's profile- for displaying
+    profile = Profile.objects.get(user=request.user)
+    # Send the posts and profile data to the main template
+    context = {
+        'post': post,
+        'profile': profile,
+    }
+
+    return render(request, 'main.html', context)
+    
