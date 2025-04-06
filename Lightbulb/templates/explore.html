@@ -1,0 +1,178 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lightbulb💡</title>
+
+    <!-- Bootstrap, fonts-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/cb792c0850.js" crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: row;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .sidebar {
+            background: #fff;
+            width: 250px;
+            height: 100vh;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            color: black;
+            position: fixed;
+        }
+        .profile-pic {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        a {
+            color: black;
+        }
+        .container-main {
+            margin-left: 270px;
+            padding: 20px;
+            width: calc(100% - 270px);
+        }
+        .post-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .post-card {
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 15px;
+            background-color: white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .post-card img {
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .post-content {
+            margin-top: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .post-actions {
+            margin-top: auto;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .post-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="row w-100">
+    <nav class="col-md-2 d-none d-md-block sidebar">
+        <div class="text-center mt-3">
+            <!-- If you don't have profile in your explore view, use a default image -->
+            {% if profile %}
+                <img src="{{profile.profileimg.url}}" alt="Profile Picture" class="profile-pic">
+            {% else %}
+                <img src="{% static 'css/user.png' %}" alt="Profile Picture" class="profile-pic">
+            {% endif %}
+            <h4 class="mt-2"><a href="/profile/{{user}}" style="text-decoration:none;">@{{user}}</a></h4>
+        </div>
+        <ul class="nav flex-column mt-4">
+            <li class="nav-item">
+                <a class="nav-link" href="/">
+                    <i class="fa-solid fa-house mr-1"></i> Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/explore">
+                    <i class="fa-solid fa-compass mr-1"></i> Explore
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+                    <i class="fa-solid fa-magnifying-glass mr-1"></i> Search
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">
+                    <i class="fa-solid fa-circle-plus mr-1"></i> Create Post
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/profile/{{user}}">
+                    <i class="fa-solid fa-user mr-1"></i> Profile
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">
+                    <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <main role="main" class="container-main">       
+        <h1>Explore</h1>
+
+        {% include "modal.html" %}
+
+        <!-- Grid Posts -->
+        <div class="post-grid">
+            {% for pos in post %}
+            <div class="post" id="{{pos.id}}">
+                <div class="post-card">
+                    {% if pos.image %}
+                        <img src="{{pos.image.url}}" alt="Post Image">
+                    {% else %}
+                        <img src="{% static 'css/user.png' %}" alt="Default Image"> 
+                    {% endif %}
+
+                    <div class="post-content">
+                        <h5><a href="/profile/{{pos.user}}" style="text-decoration: none;">@{{pos.user}}</a></h5>
+                        <p>{{pos.caption}}</p>
+                        <p class="text-muted">{{pos.created_at}}</p>
+                        <hr>
+                        <div class="post-actions d-flex justify-content-between align-items-center">
+                            <a href="/like-post/{{pos.id}}" class="btn btn-outline-primary">Like</a>
+                            {% if pos.numLikes == 0 %}
+                                <p class="mb-0">0</p>
+                            {% elif pos.numLikes == 1 %}
+                                <p class="mb-0">Liked by {{pos.numLikes}} person</p>
+                            {% else %}
+                                <p class="mb-0">Liked by {{pos.numLikes}} people</p>
+                            {% endif %}                
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</div>
+
+<script src="{% static 'js/app.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
