@@ -1,0 +1,46 @@
+<!-- Template tag used to store images -->
+{% load static %}
+<!-- Modal container for creating a new post -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">New Post</h1>
+                <!-- Button to close the modal -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body - contains the form for uploading a post -->
+            <div class="modal-body">
+                <!-- Form to handle the post upload -->
+                <form action="upload" method="POST" enctype="multipart/form-data">
+                    <!-- Security token to prevent CSRF attacks -->
+                    {% csrf_token %} <!-- Without this Django was blocking the request and returning a 403 error -->
+
+                    <!-- Image Upload Input -->
+                    <div class="mb-3">
+                        <h6>
+                            <img src="{% static 'css/upload.png' %}" alt="Upload Icon" style="height:20px;"> Upload Image
+                        </h6>
+                        <label for="image_upload" class="col-form-label">Photo</label>
+                        <input type="file" name="image_upload" class="form-control" id="image_upload" accept="image/*" required>
+                    </div>
+
+                    <!-- Caption Input -->
+                    <div class="mb-3">
+                        <label for="caption_text" class="col-form-label">Caption</label>
+                        <textarea class="form-control" name="caption" placeholder="Caption..." id="caption_text" required></textarea>
+                    </div>
+            </div>
+
+            <!-- Modal Footer - buttons to submit/close the form -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Create Post</button>
+            </div>
+                </form>
+        </div>
+    </div>
+</div>

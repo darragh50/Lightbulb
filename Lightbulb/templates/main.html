@@ -102,6 +102,9 @@
     <main role="main" class="container-main">       
         <h1>Welcome @{{user}}</h1>
 
+        {% include "modal.html" %}
+
+
         <!-- Posts -->
         <div>
             {% for pos in post %}
