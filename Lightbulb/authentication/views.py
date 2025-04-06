@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from . models import Profile, Post
+from . models import LikePost, Profile, Post
 
 # Create your views here.
 # Handle user registration - check request method. Recieve and save user input to user model
@@ -81,3 +81,28 @@ def home(request):
         'post': post,
     }
     return render(request, 'main.html', context)
+
+# Function handling liking/unliking posts
+def like(request,id):
+    if request.method == 'GET':
+        
+        # Get the username of the logged in user
+        username = request.user.username
+        # Fetch the post from the database using the given id
+        # If the post doesn't exist - return a 404 error
+        post = get_object_or_404(Post, id=id)
+
+        # Check if the user has already liked the post
+        like_filter = LikePost.objects.filter(post_id=post.id, username=username).first()
+        # Increase like count/decrease depending on status of the user
+        if like_filter is None:
+            new_like = LikePost.objects.create(post_id=post.id, username=username)
+            post.numLikes = post.numLikes + 1
+
+        else:
+            like_filter.delete()
+            post.numLikes = post.numLikes - 1
+
+        post.save()
+
+        return redirect('/')

@@ -10,7 +10,8 @@ urlpatterns = [
     path('signup/', views.signup),
     path('login/', views.login_view),
     path('logout/', views.logout_view),
-    path('upload/', views.upload)
+    path('upload/', views.upload),
+    path('like-post/<str:id>', views.like, name='like-post'),
 ]
 
 
