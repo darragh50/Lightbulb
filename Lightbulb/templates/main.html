@@ -109,7 +109,11 @@
         <div>
             {% for pos in post %}
             <div class="post" id="{{pos.id}}">
-                <img src="{{pos.image.url}}" alt="Post Image">
+                {% if pos.image %}
+                    <img src="{{pos.image.url}}" alt="Post Image">
+                {% else %}
+                    <img src="{% static 'css/user.png' %}" alt="Default Image"> 
+                {% endif %}
                 <div class="post-content" style="margin: 15px;">
                     <h5><a href="/profile/{{pos.user}}" style="text-decoration: none;">@{{pos.user}}</a></h5>
                     <p>{{pos.caption}}</p>
@@ -118,11 +122,11 @@
                     <div class="d-flex justify-content-between" style="margin-bottom: 8px;">
                         <a href="/like-post/{{pos.id}}" class="btn btn-outline-primary">Like</a>
                         {% if pos.no_of_likes == 0 %}
-                        <p>0</p>
+                            <p>0</p>
                         {% elif pos.no_of_likes == 1 %}
-                        <p>Liked by {{pos.no_of_likes}} person</p>
+                            <p>Liked by {{pos.no_of_likes}} person</p>
                         {% else %}
-                        <p>Liked by {{pos.no_of_likes}} people</p>
+                            <p>Liked by {{pos.no_of_likes}} people</p>
                         {% endif %}                
                     </div>
                 </div>

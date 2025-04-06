@@ -65,7 +65,7 @@ def upload(request):
     if request.method == 'POST':
         # Get user, image and caption from the form 
         user = request.user.username
-        image = request.FILES.get('image-upload')
+        image = request.FILES.get('image_upload')
         caption = request.POST['caption']
         # Creates a new post object and saves it
         new_post=Post.objects.create(user=user, image=image, caption=caption)
@@ -76,4 +76,8 @@ def upload(request):
 
 
 def home(request):
-    return render(request, 'main.html')
+    post=Post.objects.all().order_by('created_at')
+    context={
+        'post': post,
+    }
+    return render(request, 'main.html', context)
