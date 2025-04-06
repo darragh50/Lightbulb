@@ -76,7 +76,7 @@ def upload(request):
 
 
 def home(request):
-    post=Post.objects.all().order_by('created_at')
+    post=Post.objects.all().order_by('-created_at')
     context={
         'post': post,
     }
@@ -120,4 +120,17 @@ def feed_view(request):
     }
 
     return render(request, 'main.html', context)
-    
+
+# Function to explore the posts made by all users
+def explore(request):
+    # Get all posts made by all users, order by newest first
+    post = Post.objects.all().order_by('-created_at')
+    profile = Profile.objects.get(user=request.user)
+
+    # Send the posts and profile data to the explore template
+    context={
+        'post': post,
+        'profile': profile,
+    }
+
+    return render(request, 'explore.html', context)
