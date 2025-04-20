@@ -133,7 +133,7 @@
                             <form action="/follow" method="POST" class="d-inline">
                                 {% csrf_token %}
                                 <input type="hidden" name="follower" value="{{ user.username }}">
-                                <input type="hidden" name="user" value="{{ user_object.username }}">
+                                <input type="hidden" name="user" value="{{ user_obj.username }}">
                                 <button type="submit" class="btn btn-outline-dark btn-sm">{{ follow_unfollow }}</button>
                             </form>
                         {% endif %}
