@@ -221,5 +221,11 @@ def follow(request):
             return redirect('/profile/'+user)    
     else:
         return redirect('/')
+
+# Function to delete a post
+def delete(request,id):
+    post = Post.objects.get(id=id)
+    post.delete()
+    return redirect('/profile/'+request.user.username)
     
 
