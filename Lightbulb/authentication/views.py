@@ -228,6 +228,17 @@ def delete(request,id):
     post.delete()
     return redirect('/profile/'+request.user.username)
 
-
+# Function to search for users
+def search_results(request):
+    query = request.GET.get('qry')
+    users = Profile.objects.filter(user__username__icontains=query)
+    posts = Post.objects.filter(caption__icontains=query)
+    # Send the context to the search results template
+    context = {
+        'query': query,
+        'users': users,
+        'posts': posts,
+    }
+    return render(request, 'search_user.html', context)
     
 
