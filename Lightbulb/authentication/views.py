@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from . models import LikePost, Profile, Post, Followers
+from django.db.models import Q
 
 # Create your views here.
 # Handle user registration - check request method. Recieve and save user input to user model
@@ -76,9 +77,11 @@ def upload(request):
 
 
 def home(request):
-    post=Post.objects.all().order_by('-created_at')
+    following_users = Followers.objects.filter(follower=request.user.username).values_list('user', flat=True)
+    post=Post.objects.filter(Q(user=request.user.username) | Q(user__in=following_users)).order_by('-created_at')
     context={
         'post': post,
+        'profile': profile
     }
     return render(request, 'main.html', context)
 
