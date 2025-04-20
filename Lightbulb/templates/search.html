@@ -1,0 +1,22 @@
+<!-- Search Modal -->
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <div class="modal-header justify-content-center">
+          <form method="get" action="{% url 'search_results' %}" class="w-100">
+            {% csrf_token %}
+  
+            <div class="input-group rounded">
+              <input type="text" name="qry" class="form-control rounded" placeholder="Search for a user"
+                aria-label="Search" aria-describedby="search-addon" />
+ 
+              <button class="input-group-text border-0" id="search-addon" type="submit">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>          
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

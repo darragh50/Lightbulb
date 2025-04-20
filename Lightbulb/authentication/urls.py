@@ -17,6 +17,7 @@ urlpatterns = [
     path('profile/<str:id_user>', views.profile),
     path('follow', views.follow, name='follow'),
     path('delete/<str:id>', views.delete, name='delete'),
+    path('search-results/', views.search_results, name='search-results'),
 ]
 
 

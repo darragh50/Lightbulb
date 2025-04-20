@@ -227,5 +227,7 @@ def delete(request,id):
     post = Post.objects.get(id=id)
     post.delete()
     return redirect('/profile/'+request.user.username)
+
+
     
 
