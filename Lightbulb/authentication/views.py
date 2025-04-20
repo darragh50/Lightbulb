@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from . models import LikePost, Profile, Post
+from . models import LikePost, Profile, Post, Followers
 
 # Create your views here.
 # Handle user registration - check request method. Recieve and save user input to user model
@@ -145,6 +145,18 @@ def profile(request,id_user):
     user_posts = Post.objects.filter(user=user_obj.username).order_by('-created_at')
     # Calculating the number of posts made by the user
     user_post_length = len(user_posts)
+    # Get the followers of the user whose profile is being viewed
+    follower = request.user.username
+    user = id_user
+    if Followers.objects.filter(follower=follower, user=user).first():
+        # If the user is already followed, unfollow them
+        follow_unfollow = 'Unfollow'
+    else:
+        # If the user is not followed, follow them
+        follow_unfollow = 'Follow'
+
+    user_followers = len(Followers.objects.filter(user=id_user))
+    user_following = len(Followers.objects.filter(follower=id_user))
 
     # Pass the context back to the template
     context = {
@@ -153,6 +165,9 @@ def profile(request,id_user):
         'user_posts': user_posts,
         'user_post_length': user_post_length,
         'profile': profile,
+        'follow_unfollow': follow_unfollow,
+        'user_following': user_following,
+        'user_followers': user_followers,
     }
 
     # Check if the logged-in user is the same as the user whose profile is being viewed
@@ -184,3 +199,24 @@ def profile(request,id_user):
             return render(request, 'profile.html', context)
                 
     return render(request, 'profile.html', context)
+
+# Function to follow/unfollow users
+def follow(request):
+    if request.method == 'POST':
+        # Get the username of the logged-in user
+        follower = request.POST['follower']
+        user = request.POST['user']
+
+        if Followers.objects.filter(follower=follower, user=user).first():
+            # If the user is already followed, unfollow them
+            delete_follower = Followers.objects.get(follower=follower, user=user)
+            delete_follower.delete()
+            return redirect('/profile/'+user)        
+        else:
+            new_follower = Followers.objects.create(follower=follower, user=user)
+            new_follower.save()
+            return redirect('/profile/'+user)    
+    else:
+        return redirect('/')
+    
+

@@ -15,6 +15,7 @@ urlpatterns = [
     path('#<str:id>', views.feed_view),
     path('explore', views.explore),
     path('profile/<str:id_user>', views.profile),
+    path('follow', views.follow, name='follow'),
 ]
 
 
