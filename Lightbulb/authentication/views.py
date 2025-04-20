@@ -77,6 +77,7 @@ def upload(request):
 
 
 def home(request):
+    profile = Profile.objects.get(user=request.user)
     following_users = Followers.objects.filter(follower=request.user.username).values_list('user', flat=True)
     post=Post.objects.filter(Q(user=request.user.username) | Q(user__in=following_users)).order_by('-created_at')
     context={

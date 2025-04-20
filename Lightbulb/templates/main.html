@@ -118,7 +118,7 @@
                 {% if pos.image %}
                     <img src="{{pos.image.url}}" alt="Post Image">
                 {% else %}
-                    <img src="{% static 'css/user.png' %}" alt="Default Image"> 
+                    <img src="{% static 'media/user.png' %}" alt="Default Image"> 
                 {% endif %}
 
                 <div class="post-content">
@@ -130,7 +130,7 @@
                         <a href="/like-post/{{pos.id}}" class="btn btn-outline-primary">Like</a>
                         {% if pos.numLikes == 0 %}
                             <p>0</p>
-                        {% elif pos.no_of_likes == 1 %}
+                        {% elif pos.numLikes == 1 %}
                             <p>Liked by {{pos.numLikes}} person</p>
                         {% else %}
                             <p>Liked by {{pos.numLikes}} people</p>
