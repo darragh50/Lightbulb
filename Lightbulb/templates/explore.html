@@ -89,6 +89,8 @@
 </head>
 <body>
 <div class="row w-100">
+
+    <!-- Sidebar navigation -->
     <nav class="col-md-2 d-none d-md-block sidebar">
         <div class="text-center mt-3">
             <!-- If you don't have profile in your explore view, use a default image -->
@@ -99,6 +101,8 @@
             {% endif %}
             <h4 class="mt-2"><a href="/profile/{{user}}" style="text-decoration:none;">@{{user}}</a></h4>
         </div>
+
+        <!-- Username display linking to the user's profile -->
         <ul class="nav flex-column mt-4">
             <li class="nav-item">
                 <a class="nav-link" href="/">
@@ -133,9 +137,11 @@
         </ul>
     </nav>
 
+    <!-- Main content area -->
     <main role="main" class="container-main">       
         <h1>Explore</h1>
 
+        <!-- Include modals -->
         {% include "modal.html" %}
         {% include "search.html" %}
 
@@ -144,17 +150,23 @@
             {% for pos in post %}
             <div class="post" id="{{pos.id}}">
                 <div class="post-card">
+                    <!-- Post image or default image if none -->
                     {% if pos.image %}
                         <img src="{{pos.image.url}}" alt="Post Image">
                     {% else %}
                         <img src="{% static 'css/user.png' %}" alt="Default Image"> 
                     {% endif %}
 
+                    <!-- Post content details -->
                     <div class="post-content">
+                        <!-- Username with link to profile -->
                         <h5><a href="/profile/{{pos.user}}" style="text-decoration: none;">@{{pos.user}}</a></h5>
+                        <!-- Post caption -->
                         <p>{{pos.caption}}</p>
+                        <!-- Post date -->
                         <p class="text-muted">{{pos.created_at}}</p>
                         <hr>
+                        <!-- Like button and like count -->
                         <div class="post-actions d-flex justify-content-between align-items-center">
                             <a href="/like-post/{{pos.id}}" class="btn btn-outline-primary">Like</a>
                             {% if pos.numLikes == 0 %}

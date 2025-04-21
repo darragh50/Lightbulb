@@ -66,30 +66,38 @@
     <div class="container">
     <h1>Sign Up 💡</h1>
     
+    <!-- Conditional -->
     {% if invalid %}
     <p style="color: red;">{{ invalid }}</p>
     {% endif %}
     
+    <!-- Start of the Form for User Registration -->
     <form method="post">
+        <!-- CSRF Token for Security -->
         {% csrf_token %}
         
+        <!-- Input field for name -->
         <div class="form-group">
             <label for="firstname">Your Name:</label>
             <input type="text" id="firstname" name="firstname" required>
         </div>
         
+        <!-- Input field for email -->
         <div class="form-group">
          <label for="emailID">Your Email:</label>
             <input type="email" id="emailID" name="emailID" required>
         </div>
         
+        <!-- Input field for password -->
         <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
         </div>
                 
+        <!-- Submit-->
         <button type="submit">Register</button>
     </form>
+        <!-- Link to Login Page for Users Who Already Have an Account -->
         <p class="login-link">Already have an account? <a href="/login">Login</a></p>
     </div>
 </body>

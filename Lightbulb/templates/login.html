@@ -66,26 +66,33 @@
     <div class="container">
         <h1>Login 💡</h1>
         
+        <!-- If the 'invalid' variable exists (for invalid login attempts), show the error message -->
         {% if invalid %}
         <p class="error">{{ invalid }}</p>
         {% endif %}
         
+        <!-- Login form -->
         <form method="post">
+            <!-- Django CSRF token for security -->
             {% csrf_token %}
             
+            <!-- Name input field -->
             <div class="form-group">
                 <label for="firstname">Your Name:</label>
                 <input type="text" id="firstname" name="firstname" required>
             </div>
             
+            <!-- Password input field -->
             <div class="form-group">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
             </div>
             
+            <!-- Submit button -->
             <button type="submit">Login</button>
         </form>
         
+        <!-- Sign up link for users without an account -->
         <p class="signup-link">Don't have an account? <a href="/signup">Sign Up</a></p>
     </div>
 </body>

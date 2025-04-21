@@ -1,32 +1,50 @@
 {% load static %}
+<!-- Edit Profile Modal -->
 <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="editProfileLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow-lg">
+    <div class="modal-dialog modal-dialog-centered"> <!-- Centered modal dialog -->
+        <div class="modal-content shadow-lg"> <!-- Modal box with shadow -->
+
+            <!-- Modal header with title and close button -->
             <div class="modal-header text-white" style="background-color: 0d6efd;">
                 <h5 class="modal-title" id="editProfileLabel"><i class="fa-solid fa-pen-to-square me-2"></i>Edit Profile</h5>
                 <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
+             <!-- Form to edit profile (uses POST method and multipart encoding for file uploads) -->
             <form method="POST" enctype="multipart/form-data">
+                <!-- Django's CSRF protection token -->
                 {% csrf_token %}
+                <!-- Modal body containing the form fields -->
                 <div class="modal-body px-4 py-3">
+                    <!-- Profile Picture upload -->
                     <div class="mb-3 text-center">
                         <label class="form-label"><strong>Profile Picture</strong></label>
                         <div class="mb-2">
+                            <!-- Display current profile picture -->
                             <img src="{{ user_profile.profileimg.url }}" alt="Current profile image" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
                         </div>
+                        <!-- File input for uploading new profile picture -->
                         <input type="file" name="image" class="form-control">
                     </div>
+
+                     <!-- Bio textarea input -->
                     <div class="mb-3">
                         <label for="bio-text" class="form-label"><i class="fa-solid fa-align-left me-2"></i>Bio</label>
                         <textarea class="form-control" id="bio-text" name="bio" placeholder="Your bio here...">{{ user_profile.bio }}</textarea>
                     </div>
+
+                    <!-- Location input -->
                     <div class="mb-3">
                         <label for="location" class="form-label"><i class="fa-solid fa-location-dot me-2"></i>Location</label>
                         <input type="text" class="form-control" id="location" name="location" value="{{ user_profile.location }}">
                     </div>
                 </div>
+
+                <!-- Modal footer with action buttons -->
                 <div class="modal-footer bg-light">
+                    <!-- Close button (Doesn't save modal) -->
                     <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                    <!-- Submit button to save changes -->
                     <button type="submit" class="btn btn-outline-primary">Update Profile</button>
                 </div>
             </form>

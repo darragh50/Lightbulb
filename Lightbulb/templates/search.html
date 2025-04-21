@@ -3,14 +3,19 @@
     <div class="modal-dialog">
       <div class="modal-content">
   
+        <!-- Form that submits a GET request to the 'search_results' URL -->
         <div class="modal-header justify-content-center">
           <form method="get" action="{% url 'search_results' %}" class="w-100">
+            <!-- CSRF Token for security in Django forms -->
             {% csrf_token %}
   
+            <!-- Input Group for Search -->
             <div class="input-group rounded">
+                <!-- Text Input for Search Query -->
               <input type="text" name="qry" class="form-control rounded" placeholder="Search for a user"
                 aria-label="Search" aria-describedby="search-addon" />
  
+              <!-- Search Button -->
               <button class="input-group-text border-0" id="search-addon" type="submit">
                 <i class="fas fa-search"></i>
               </button>

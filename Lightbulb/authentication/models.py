@@ -4,6 +4,8 @@ import uuid
 from datetime import datetime
 # Create your models here.
 
+# Profile model - contains user, id_user, bio, profileimg, location
+# Return username of user
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     id_user = models.IntegerField(primary_key=True, default=0)
@@ -15,7 +17,7 @@ class Profile(models.Model):
         return self.user.username
 
 # Post model - contains unique_id, image, caption, time created, likes
-# Return username of user who posted 
+# Return user who posted 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     user = models.CharField(max_length=100)
@@ -36,6 +38,8 @@ class LikePost(models.Model):
     def __str__(self):
         return self.username
     
+# Followers model - contains follower and user
+# Return user who followed
 class Followers(models.Model):
     follower = models.CharField(max_length=100)
     user = models.CharField(max_length=100)

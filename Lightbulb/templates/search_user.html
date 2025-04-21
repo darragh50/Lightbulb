@@ -36,22 +36,27 @@
   </style>
 </head>
 <body>
+<!-- Search Results Header -->
   <div class="container">
     <div class="search-header text-center">
       <h2>Search Results for "<strong>{{ query }}</strong>"</h2>
     </div>
 
+    <!-- User Profiles Result Card -->
     <div class="card p-3 mb-4">
       <h5 class="mb-3"><i class="fa-solid fa-user"></i> User Profiles</h5>
 
+      <!-- If users were found -->
       {% if users %}
         <div class="list-group">
+        <!-- Loop through users and display as list items -->
           {% for user in users %}
             <a href="/profile/{{ user.user.username }}" class="list-group-item list-group-item-action d-flex align-items-center">
               <strong>@{{ user.user.username }}</strong>
             </a>
           {% endfor %}
         </div>
+      <!-- If no users were found -->
       {% else %}
         <p class="text-muted">No users found matching "{{ query }}".</p>
       {% endif %}

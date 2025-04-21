@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from . models import LikePost, Profile, Post, Followers
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 # Handle user registration - check request method. Recieve and save user input to user model
@@ -17,6 +18,7 @@ def signup(request):
         if User.objects.filter(username=firstname).exists():
             return render(request, 'signup.html', {'invalid': "User already exists"})
         
+        # Check if email already in use
         if User.objects.filter(email=emailID).exists():
             return render(request, 'signup.html', {'invalid': "Email already in use"})
 
@@ -57,11 +59,13 @@ def login_view(request):
     return render(request, 'login.html')
 
 # Function to handle user logout
+@login_required(login_url='/login')
 def logout_view(request):
     logout(request)
     return redirect('/login')
 
 # Function that handles uploading of a new post
+@login_required(login_url='/login')
 def upload(request):
     if request.method == 'POST':
         # Get user, image and caption from the form 
@@ -75,10 +79,14 @@ def upload(request):
     else:
         return redirect('/')
 
-
+@login_required(login_url='/login')
 def home(request):
+    # Get the currently logged-in user's Profile object
     profile = Profile.objects.get(user=request.user)
+    # Retrieve a list of usernames that the current user is following
     following_users = Followers.objects.filter(follower=request.user.username).values_list('user', flat=True)
+    # Get all posts created by:
+    # Q is used to allow for combining multiple conditions
     post=Post.objects.filter(Q(user=request.user.username) | Q(user__in=following_users)).order_by('-created_at')
     context={
         'post': post,
@@ -87,6 +95,7 @@ def home(request):
     return render(request, 'main.html', context)
 
 # Function handling liking/unliking posts
+@login_required(login_url='/login')
 def like(request,id):
     if request.method == 'GET':
         
@@ -109,9 +118,17 @@ def like(request,id):
 
         post.save()
 
-        return redirect('/#' + id)
+        # Get the page the user came from
+        referer = request.META.get('HTTP_REFERER')
+        if referer:
+            # If there's a referer, redirect back to it
+            return redirect(referer)
+        else:
+            # Fallback to home page if no referer
+            return redirect('/#' + str(id))
     
 # Function generates the user's feed showing their posts 
+@login_required(login_url='/login')
 def feed_view(request):
     # Get posts made by the current user 
     post = Post.objects.get(id=id)
@@ -126,11 +143,11 @@ def feed_view(request):
     return render(request, 'main.html', context)
 
 # Function to explore the posts made by all users
+@login_required(login_url='/login')
 def explore(request):
     # Get all posts made by all users, order by newest first
     post = Post.objects.all().order_by('-created_at')
     profile = Profile.objects.get(user=request.user)
-
     # Send the posts and profile data to the explore template
     context={
         'post': post,
@@ -140,6 +157,7 @@ def explore(request):
     return render(request, 'explore.html', context)
 
 # Function to view a user's profile
+@login_required(login_url='/login')
 def profile(request,id_user):
     # Get the user object with the provided id 
     user_obj = User.objects.get(username=id_user)
@@ -224,12 +242,14 @@ def follow(request):
         return redirect('/')
 
 # Function to delete a post
+@login_required(login_url='/login')
 def delete(request,id):
     post = Post.objects.get(id=id)
     post.delete()
     return redirect('/profile/'+request.user.username)
 
 # Function to search for users
+@login_required(login_url='/login')
 def search_results(request):
     query = request.GET.get('qry')
     users = Profile.objects.filter(user__username__icontains=query)

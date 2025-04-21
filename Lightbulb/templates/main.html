@@ -65,37 +65,49 @@
     </style>
 </head>
 <div class="row">
+    <!-- Sidebar Navigation -->
     <nav class="col-md-2 d-none d-md-block sidebar">
         <div class="text-center mt-3">
+            <!-- User Profile Picture -->
             <img src="{{profile.profileimg.url}}" alt="Profile Picture" class="profile-pic">
+            
+            <!-- Username link to profile page -->
             <h4 class="mt-2"><a href="/profile/{{user}}" style="text-decoration:none;">@{{user}}</a></h4>
         </div>
+
+        <!-- Navigation Links -->
         <ul class="nav flex-column mt-4">
+            <!-- Home -->
             <li class="nav-item">
                 <a class="nav-link active" href="/">
                     <i class="fa-solid fa-house mr-1"></i> Home
                 </a>
             </li>
+            <!-- Explore -->
             <li class="nav-item">
                 <a class="nav-link" href="/explore">
                     <i class="fa-solid fa-compass mr-1"></i> Explore
                 </a>
             </li>
+            <!-- Search -->
             <li class="nav-item">
                 <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal3">
                     <i class="fa-solid fa-magnifying-glass mr-1"></i> Search
                 </a>
             </li>
+            <!-- Create a Post -->
             <li class="nav-item">
                 <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">
                     <i class="fa-solid fa-circle-plus mr-1"></i> Create Post
                 </a>
             </li>
+            <!-- Profile -->
             <li class="nav-item">
                 <a class="nav-link" href="/profile/{{user}}">
                     <i class="fa-solid fa-user mr-1"></i> Profile
                 </a>
             </li>
+            <!-- Logout -->
             <li class="nav-item">
                 <a class="nav-link" href="/logout">
                     <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
@@ -104,9 +116,10 @@
         </ul>
     </nav>
 
+    <!-- Main content area -->
     <main role="main" class="container-main">       
-        <h1>Welcome @{{user}}</h1>
 
+        <!-- Include modals -->
         {% include "modal.html" %}
         {% include "search.html" %}
 
@@ -115,6 +128,7 @@
             {% for pos in post %}
             <div class="post" id="{{pos.id}}">
                 <div class="post-card">
+                <!-- Post image or fallback image if none -->
                 {% if pos.image %}
                     <img src="{{pos.image.url}}" alt="Post Image">
                 {% else %}
@@ -122,10 +136,14 @@
                 {% endif %}
 
                 <div class="post-content">
+                    <!-- Post user's username (link to their profile) -->
                     <h5><a href="/profile/{{pos.user}}" style="text-decoration: none;">@{{pos.user}}</a></h5>
+                    <!-- Post caption -->
                     <p>{{pos.caption}}</p>
+                    <!-- Post time created at -->
                     <p class="text-muted">{{pos.created_at}}</p>
                     <hr>
+                    <!-- Like button and like count -->
                     <div class="d-flex justify-content-between align-items-center">
                         <a href="/like-post/{{pos.id}}" class="btn btn-outline-primary">Like</a>
                         {% if pos.numLikes == 0 %}
